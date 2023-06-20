@@ -12,11 +12,8 @@ from django.db.models.aggregates import Count
 # Create your views here.
 
 class ProductList(ListCreateAPIView):
-    def get_queryset(self):
-        return Product.objects.select_related('collection').all()
-    
-    def get_serializer_class(self):
-        return ProductSerializer
+    queryset = Product.objects.select_related('collection').all()
+    serializer_class = ProductSerializer
     
     def get_serializer_context(self):
         return {'request': self.request}
