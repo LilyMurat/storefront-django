@@ -7,7 +7,7 @@ from pprint import pprint
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
-router.register('products', views.ProductViewSet)
+router.register('products', views.ProductViewSet, basename='products')
 router.register('collections', views.CollectionViewSet)
 #router.register('reviews',views.ReviewViewSet)
 pprint(router.urls)
