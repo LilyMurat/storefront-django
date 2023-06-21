@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
-from .models import Product, Collection, OrderItem, Review
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
+from rest_framework.mixins import CreateModelMixin
+from .models import Product, Collection, OrderItem, Review, Cart
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilter
@@ -53,5 +54,10 @@ class ReviewViewSet(ModelViewSet):
             return Response({'error':'Review cannot be deleted because the review is for that particular product only '})
         return super().destroy(request, *args, **kwargs)
 """
+
+class CartViewSet(CreateModelMixin, GenericViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
 
  
