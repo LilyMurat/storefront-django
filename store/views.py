@@ -7,8 +7,8 @@ from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Product, Collection, OrderItem
-from .serializers import ProductSerializer, CollectionSerializer
+from .models import Product, Collection, OrderItem, Review
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
 from django.db.models.aggregates import Count
 # Create your views here.
 
@@ -33,7 +33,20 @@ class CollectionViewSet(ModelViewSet):
             return Response({'error':'Collection cannot be deleted because it contains a product'})
         return super().destroy(request, *args, **kwargs)
 
+class ReviewViewSet(ModelViewSet):
+    serializer_class = ReviewSerializer
 
+    def get_queryset(self):
+        return Review.objects.filter(product_id=self.kwargs['product_pk'])
 
+    def get_serializer_context(self):
+        return {'product_id':self.kwargs['product_pk']}
+    
+"""
+    def destroy(self, request, *args, **kwargs):
+        if Review.objects.filter(product_id=kwargs['pk']).count() >0:
+            return Response({'error':'Review cannot be deleted because the review is for that particular product only '})
+        return super().destroy(request, *args, **kwargs)
+"""
 
  
