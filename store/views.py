@@ -8,6 +8,7 @@ from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializ
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilter
+from .pagination import DefaultPagination
 
 # Create your views here.
 
@@ -16,6 +17,7 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends=[DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
+    pagination_class = DefaultPagination
     search_fields = ['title', 'description']
     ordering_fields = ['unit_price','last_update' ]
 
