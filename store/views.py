@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin
 from .models import Product, Collection, OrderItem, Review, Cart, CartItem, Customer, Order
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer,\
+from .serializers import CreateOrderSerializer, ProductSerializer, CollectionSerializer, ReviewSerializer,\
       CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer,\
           CustomerSerializer, OrderSerializer
 from django.db.models.aggregates import Count
@@ -115,6 +115,14 @@ class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, Ge
 class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer
     #permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
+
+    def get_serializer_context(self):
+        return {'user_id':self.request.user.id}
 
     def get_queryset(self):
         user = self.request.user
