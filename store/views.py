@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin
-from .models import Product, Collection, OrderItem, Review, Cart, CartItem, Customer
+from .models import Product, Collection, OrderItem, Review, Cart, CartItem, Customer, Order
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer,\
-      CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer
+      CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer,\
+          CustomerSerializer, OrderSerializer
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilter
@@ -110,3 +111,7 @@ class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, Ge
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
+        
+class OrderViewSet(ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
