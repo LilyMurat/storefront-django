@@ -20,6 +20,9 @@ class Collection(models.Model):
 
     class Meta:
         ordering = ['title']
+        permissions = [
+            ('view_history', 'Can view history')
+        ]
 
 
 class Product(models.Model):

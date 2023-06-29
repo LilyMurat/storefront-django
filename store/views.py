@@ -13,7 +13,7 @@ from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilter
 from .pagination import DefaultPagination
-from .permissions import IsAdminOrReadonly
+from .permissions import IsAdminOrReadonly, FUllDjangoModelPermissons
 
 # Create your views here.
 
@@ -83,6 +83,11 @@ class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, Ge
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     permission_classes = [IsAdminUser]
+
+    @action(detail=True)
+    def hsitory(self, request, pk):
+        return Response('ok')
+
 
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
